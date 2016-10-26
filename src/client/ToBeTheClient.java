@@ -48,7 +48,7 @@ public class ToBeTheClient extends JFrame {
   }
 
   /**
-   * This is where all the drawing goes.
+   * This is where all the drawing goes .
    */
   class DrawingPanel extends JPanel {
 
