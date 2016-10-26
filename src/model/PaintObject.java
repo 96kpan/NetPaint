@@ -5,6 +5,8 @@ package model;
 import java.io.Serializable;
 
 /**
+ * THIS HAS TO BE REPLACED WITH FOUR FILES
+ * 
  * A PaintObject is an abstract class defining a shape 
  * that can be drawn between any two points.
  */

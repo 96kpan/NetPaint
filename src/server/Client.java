@@ -4,6 +4,8 @@ package server;
  * TO BE INTEGRATED WITH THE GUI IN PACKAGE CLIENT AFTER YOUR PARTNER 
  * CAN DRAW GHOST SHAPES AND ADD TO A VECTOR OF PaintObject OBJECTS.
  * 
+ * THIS CONTAINS SOME OF THE BOILERPLATE CODE PROVIDED HERE
+ * 
  * This Client connects to a Server (if it is up and running),
  * writes a String object to the server, reads a String object
  * from the server (which is printed to the console)

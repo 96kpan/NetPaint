@@ -4,6 +4,8 @@ package server;
  * TO BE CHANGED to allow multiple clients the read and write a Vector of
  * PaintObjects every time a client writes a PaintObject to this server.
  * 
+ * THIS CONTAINS SOME OF THE BOILERPLATE CODE PROVIDED HERE
+ * 
  * Currently this server waits for one connection, reads the Clients message, which  
  * is printed to a console, writes a message to the Client, and closes the connection.
  *
