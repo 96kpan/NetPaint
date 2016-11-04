@@ -37,4 +37,8 @@ public abstract class PaintObject {
 	}
 
 	public abstract void draw(Graphics g);
+	
+	public abstract java.awt.Image getImage();
+	
+	public abstract boolean isImage();
 }

@@ -4,6 +4,7 @@ import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.FlowLayout;
 import java.awt.Graphics;
+import java.awt.Image;
 import java.awt.Point;
 import java.awt.Shape;
 import java.awt.Toolkit;
@@ -24,6 +25,7 @@ import javax.swing.JScrollPane;
 import javax.swing.ScrollPaneConstants;
 
 import model.Line;
+import model.ImageObject;
 import model.Oval;
 import model.PaintObject;
 import model.Rectangle;
@@ -43,6 +45,9 @@ public class views extends JFrame {
 	private int xEndPosition;
 	private int yEndPosition;
 	private int count = 0;
+	private DrawingPanel drawingPanel;
+	private static Vector<PaintObject> allPaintObjects;
+	private static Vector<PaintObject> tempObjects;
 	private JRadioButton lineButton;
 	private JRadioButton rectangleButton;
 	private JRadioButton ovalButton;
@@ -59,9 +64,6 @@ public class views extends JFrame {
 
 		client.setVisible(true);
 	}
-
-	private DrawingPanel drawingPanel;
-	private static Vector<PaintObject> allPaintObjects;
 
 	public views() {
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
@@ -155,34 +157,32 @@ public class views extends JFrame {
 					}
 
 					else{
-
+						System.out.println("here");
 						PaintObject draw = null;
-						if(e.MOUSE_CLICKED == 500){
-							xEndPosition = e.getX();
-							yEndPosition = e.getY();
-							dragging = false;
-							
-							if(lineButton.isSelected()){
-								draw = new Line(color, new Point(xInitPosition, yInitPosition), new Point(xEndPosition, yEndPosition));
-								shape = "Line";
-							}
-							else if(rectangleButton.isSelected()){
-								draw = new Rectangle(color, new Point(xInitPosition, yInitPosition), new Point(xEndPosition, yEndPosition));
-								shape = "Rectangle";
-							}
-							else if(ovalButton.isSelected()){
-								draw = new Oval(color, new Point(xInitPosition, yInitPosition), new Point(xEndPosition, yEndPosition));
-								shape = "Oval";
-							}
-							else if(imageButton.isSelected()){
-								System.out.println("IMAGE DOES NOT WORK");
-								shape = "Image";
-							}
-							
-							allPaintObjects.add(draw);
-							repaint();
+
+						xEndPosition = e.getX();
+						yEndPosition = e.getY();
+						dragging = false;
+
+						if(lineButton.isSelected()){
+							draw = new Line(color, new Point(xInitPosition, yInitPosition), new Point(xEndPosition, yEndPosition));
+							shape = "Line";
 						}
-						
+						else if(rectangleButton.isSelected()){
+							draw = new Rectangle(color, new Point(xInitPosition, yInitPosition), new Point(xEndPosition, yEndPosition));
+							shape = "Rectangle";
+						}
+						else if(ovalButton.isSelected()){
+							draw = new Oval(color, new Point(xInitPosition, yInitPosition), new Point(xEndPosition, yEndPosition));
+							shape = "Oval";
+						}
+						else if(imageButton.isSelected()){
+							draw = new ImageObject(color, new Point(xInitPosition, yInitPosition), new Point(xEndPosition, yEndPosition));
+							shape = "Image";
+						}
+
+						allPaintObjects.add(draw);
+						repaint();
 					}
 
 
@@ -214,12 +214,12 @@ public class views extends JFrame {
 						shape = "Oval";
 					}
 					else if(imageButton.isSelected()){
-						System.out.println("IMAGE DOES NOT WORK");
+						temp = new ImageObject(color, new Point(xInitPosition, yInitPosition), new Point(xEndPosition, yEndPosition));
 						shape = "Image";
 					}
-					temp.draw(g);
-
+					allPaintObjects.add(temp);
 					repaint();
+					
 
 
 
@@ -230,25 +230,28 @@ public class views extends JFrame {
 				@Override
 				public void mouseMoved(MouseEvent e){
 
-					System.out.println(" x "  + e.getX() + "  y " + e.getY());
+					//System.out.println(" x "  + e.getX() + "  y " + e.getY());
 					
-					System.out.println("xEndPosition  " + xEndPosition + " yEndPosition " + yEndPosition);
 
 					PaintObject temp = null;
+					
+					
+					//allPaintObjects.remove(temp);
 					if(lineButton.isSelected()){
 						temp = new Line(color, new Point(xInitPosition, yInitPosition), e.getPoint());
 					}
-//					else if(rectangleButton.isSelected()){
-//						temp = new Rectangle(color, new Point(xInitPosition, yInitPosition), new Point(xEndPosition, yEndPosition));
-//					}
-//					else if(ovalButton.isSelected()){
-//						temp = new Oval(color, new Point(xInitPosition, yInitPosition), new Point(xEndPosition, yEndPosition));
-//					}
-//					else if(imageButton.isSelected()){
-//						System.out.println("IMAGE DOES NOT WORK");
-//					}
+					else if(rectangleButton.isSelected()){
+						temp = new Rectangle(color, new Point(xInitPosition, yInitPosition), new Point(xEndPosition, yEndPosition));
+					}
+					else if(ovalButton.isSelected()){
+						temp = new Oval(color, new Point(xInitPosition, yInitPosition), new Point(xEndPosition, yEndPosition));
+					}
+					else if(imageButton.isSelected()){
+						temp = new ImageObject(color, new Point(xInitPosition, yInitPosition), new Point(xEndPosition, yEndPosition));
+					}
 
-					temp.draw(g);
+					allPaintObjects.add(temp);
+					repaint();
 
 
 
@@ -258,21 +261,22 @@ public class views extends JFrame {
 			// draw all of the paint objects
 			for (PaintObject ob : allPaintObjects)
 				ob.draw(g);
+				
 		}
 	}
-	
+
 	public Point getInitPoint(){
 		return new Point(this.xInitPosition, this.yInitPosition);
 	}
-	
+
 	public Point getEndPoint(){
 		return new Point(this.xEndPosition, this.yEndPosition);
 	}
-	
+
 	public Color getColor(){
 		return color;
 	}
-	
+
 	public String getPaintObject(){
 		return shape;
 	}

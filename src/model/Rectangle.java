@@ -42,4 +42,16 @@ public class Rectangle extends PaintObject {
 		
 		g.fillRect(x1, y1, x2-x1, y2-y1);
 	}
+
+	@Override
+	public java.awt.Image getImage() {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+	@Override
+	public boolean isImage() {
+		// TODO Auto-generated method stub
+		return false;
+	}
 }
