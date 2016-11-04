@@ -61,6 +61,7 @@ public class views extends JFrame {
 		views client = new views();
 
 		allPaintObjects = new Vector<>();
+		tempObjects = new Vector<>();
 
 		client.setVisible(true);
 	}
@@ -142,22 +143,19 @@ public class views extends JFrame {
 			g.fillRect(0, 0, this.getWidth(), this.getHeight());
 
 			this.addMouseListener(new MouseAdapter() {
-
-
-
+				
 				@Override
 				public void mousePressed(MouseEvent e) {
 
 					if(!dragging){
 						xInitPosition = e.getX();
 						yInitPosition = e.getY();
-						System.out.println("xInitPosition  " + xInitPosition + " yInitPosition " + yInitPosition);
+						//System.out.println("xInitPosition  " + xInitPosition + " yInitPosition " + yInitPosition);
 						dragging = true;
 						return;
 					}
 
 					else{
-						System.out.println("here");
 						PaintObject draw = null;
 
 						xEndPosition = e.getX();
@@ -192,40 +190,6 @@ public class views extends JFrame {
 
 			this.addMouseMotionListener(new MouseMotionAdapter()
 			{
-				//mouse drag listener
-				public void mouseDragged(MouseEvent e)
-				{
-					PaintObject temp = null;
-					Point tempPt = e.getPoint();
-					//System.out.println("xEndPosition " + tempPt.getX() + " yEndPosition " + tempPt.getY());
-
-					if(lineButton.isSelected()){
-
-						temp = new Line(color, new Point(xInitPosition, yInitPosition), tempPt);
-						System.out.println("xEndPosition " + tempPt.getX() + " yEndPosition " + tempPt.getY());
-						shape = "Line";
-					}
-					else if(rectangleButton.isSelected()){
-						temp = new Rectangle(color, new Point(xInitPosition, yInitPosition), tempPt);
-						shape = "Rectangle";
-					}
-					else if(ovalButton.isSelected()){
-						temp = new Oval(color, new Point(xInitPosition, yInitPosition), tempPt);
-						shape = "Oval";
-					}
-					else if(imageButton.isSelected()){
-						temp = new ImageObject(color, new Point(xInitPosition, yInitPosition), new Point(xEndPosition, yEndPosition));
-						shape = "Image";
-					}
-					allPaintObjects.add(temp);
-					repaint();
-					
-
-
-
-					//System.out.println("x " + m.getX() + " y " + m.getY());
-
-				}
 
 				@Override
 				public void mouseMoved(MouseEvent e){
@@ -251,7 +215,9 @@ public class views extends JFrame {
 					}
 
 					allPaintObjects.add(temp);
+					tempObjects.add(temp);
 					repaint();
+					
 
 
 
@@ -259,8 +225,23 @@ public class views extends JFrame {
 			});
 
 			// draw all of the paint objects
-			for (PaintObject ob : allPaintObjects)
-				ob.draw(g);
+			for (PaintObject ob : allPaintObjects){
+				if(tempObjects.contains(ob)){
+					tempObjects.remove(ob);
+					tempObjects.remove(ob);
+					tempObjects.remove(ob);
+					tempObjects.remove(ob);
+					tempObjects.remove(ob);
+					tempObjects.remove(ob);
+					tempObjects.remove(ob);
+					tempObjects.remove(ob);
+					System.out.println(tempObjects.size());
+					
+				}else{
+					ob.draw(g);
+				}
+			}
+				
 				
 		}
 	}
