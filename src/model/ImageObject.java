@@ -1,3 +1,5 @@
+//1245
+
 package model;
 
 import java.awt.Color;
@@ -49,7 +51,7 @@ public class ImageObject extends PaintObject  {
 
 			java.awt.Image inputImage = ImageIO.read(new File("image.jpg")).getScaledInstance(newWidth,
 					newHeight, java.awt.Image.SCALE_DEFAULT);
-			g.drawImage(this.getImage(), 20, 20, (ImageObserver) g);
+			g.drawImage(this.getImage(), 20, 20, null);
 			//g.drawImage(this.getImage(), x1, y1, this.getWidth(), this.getHeight(), (ImageObserver) this);
 
 
