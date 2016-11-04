@@ -1,15 +1,40 @@
+/*
+ * Katie Pan
+ * PaintObject for Netpaint -> Abstract, super class
+ */
+
+
 package model;
 
-// REPLACED THIS WITH BETTER PaintObject INHERITANCE HIERARCHY
+import java.awt.Color;
+import java.awt.Graphics;
+import java.awt.Point;
 
-import java.io.Serializable;
+public abstract class PaintObject {
+	private Color color;
+	private Point pointone;
+	private Point pointtwo;
+	
+	public PaintObject(Color thiscolor, Point point, Point point2) {
+		color = thiscolor;
+		pointone = point;
+		pointtwo = point2;
+	}
+	
+	public Point getPoint1() {
+		return pointone;
+	}
+	
+	
+	public Color getColor() {
+		return color;
+	}
+	
+	
+	
+	public Point getPoint2() {
+		return pointtwo;
+	}
 
-/**
- * THIS HAS TO BE REPLACED WITH FOUR FILES
- * 
- * A PaintObject is an abstract class defining a shape 
- * that can be drawn between any two points.
- */
-public abstract class PaintObject implements Serializable {
-
+	public abstract void draw(Graphics g);
 }
