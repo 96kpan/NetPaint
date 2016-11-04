@@ -157,6 +157,7 @@ public class views extends JFrame {
 					}
 
 					else{
+						System.out.println("here");
 						PaintObject draw = null;
 
 						xEndPosition = e.getX();
@@ -180,9 +181,8 @@ public class views extends JFrame {
 							shape = "Image";
 						}
 
-						//allPaintObjects.add(draw);
+						allPaintObjects.add(draw);
 						repaint();
-						draw.draw(g);
 					}
 
 
@@ -217,8 +217,9 @@ public class views extends JFrame {
 						temp = new ImageObject(color, new Point(xInitPosition, yInitPosition), new Point(xEndPosition, yEndPosition));
 						shape = "Image";
 					}
+					allPaintObjects.add(temp);
 					repaint();
-					temp.draw(g);
+					
 
 
 
@@ -229,7 +230,7 @@ public class views extends JFrame {
 				@Override
 				public void mouseMoved(MouseEvent e){
 
-					System.out.println(" x "  + e.getX() + "  y " + e.getY());
+					//System.out.println(" x "  + e.getX() + "  y " + e.getY());
 					
 
 					PaintObject temp = null;
@@ -249,8 +250,8 @@ public class views extends JFrame {
 						temp = new ImageObject(color, new Point(xInitPosition, yInitPosition), new Point(xEndPosition, yEndPosition));
 					}
 
+					allPaintObjects.add(temp);
 					repaint();
-					temp.draw(g);
 
 
 
