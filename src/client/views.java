@@ -141,11 +141,16 @@ public class views extends JFrame {
 			super.paintComponent(g);
 			g.setColor(Color.white);
 			g.fillRect(0, 0, this.getWidth(), this.getHeight());
+			
+			PaintObject p = new ImageObject(color, new Point(0, 0), new Point(100, 100));
+			p.draw(g);
+			
 
 			this.addMouseListener(new MouseAdapter() {
 				
 				@Override
-				public void mousePressed(MouseEvent e) {
+				public void mouseClicked(MouseEvent e) {
+				
 
 					if(!dragging){
 						xInitPosition = e.getX();
@@ -196,54 +201,45 @@ public class views extends JFrame {
 
 					//System.out.println(" x "  + e.getX() + "  y " + e.getY());
 					
+					if(dragging){
+						PaintObject temp = null;
+						
+						
+						//allPaintObjects.remove(temp);
+						if(lineButton.isSelected()){
+							temp = new Line(color, new Point(xInitPosition, yInitPosition), e.getPoint());
+						}
+						else if(rectangleButton.isSelected()){
+							temp = new Rectangle(color, new Point(xInitPosition, yInitPosition), new Point(xEndPosition, yEndPosition));
+						}
+						else if(ovalButton.isSelected()){
+							temp = new Oval(color, new Point(xInitPosition, yInitPosition), new Point(xEndPosition, yEndPosition));
+						}
+						else if(imageButton.isSelected()){
+							temp = new ImageObject(color, new Point(xInitPosition, yInitPosition), new Point(xEndPosition, yEndPosition));
+						}
 
-					PaintObject temp = null;
-					
-					
-					//allPaintObjects.remove(temp);
-					if(lineButton.isSelected()){
-						temp = new Line(color, new Point(xInitPosition, yInitPosition), e.getPoint());
+
+						allPaintObjects.remove(allPaintObjects.size()-1);
+						allPaintObjects.add(temp);
+						
+						repaint();
 					}
-					else if(rectangleButton.isSelected()){
-						temp = new Rectangle(color, new Point(xInitPosition, yInitPosition), new Point(xEndPosition, yEndPosition));
-					}
-					else if(ovalButton.isSelected()){
-						temp = new Oval(color, new Point(xInitPosition, yInitPosition), new Point(xEndPosition, yEndPosition));
-					}
-					else if(imageButton.isSelected()){
-						temp = new ImageObject(color, new Point(xInitPosition, yInitPosition), new Point(xEndPosition, yEndPosition));
-					}
-
-					allPaintObjects.add(temp);
-					tempObjects.add(temp);
-					repaint();
-					
-
-
-
+	
 				}
 			});
 
 			// draw all of the paint objects
 			for (PaintObject ob : allPaintObjects){
-				if(tempObjects.contains(ob)){
-					tempObjects.remove(ob);
-					tempObjects.remove(ob);
-					tempObjects.remove(ob);
-					tempObjects.remove(ob);
-					tempObjects.remove(ob);
-					tempObjects.remove(ob);
-					tempObjects.remove(ob);
-					tempObjects.remove(ob);
-					System.out.println(tempObjects.size());
-					
-				}else{
-					ob.draw(g);
-				}
+				ob.draw(g);
 			}
 				
 				
 		}
+	}
+	
+	public void repaint(){
+		
 	}
 
 	public Point getInitPoint(){
