@@ -136,52 +136,49 @@ public class views extends JFrame {
 			g.fillRect(0, 0, this.getWidth(), this.getHeight());
 		
 			this.addMouseListener(new MouseAdapter() {
+				
+				boolean dragging = false;
 
 				@Override
 				public void mousePressed(MouseEvent e) {
 					
-//					xInitPosition = e.getX();
-//					yInitPosition = e.getY();
-//					System.out.println("xInitPosition " + xInitPosition + " yInitPosition " + yInitPosition);
-//	
-					repaint();
-				}
-				
-				@Override
-				public void mouseClicked(MouseEvent e){
+					if(!dragging){
+						xInitPosition = e.getX();
+						yInitPosition = e.getY();
+						System.out.println("xInitPosition  " + xInitPosition + " yInitPosition " + yInitPosition);
+						dragging = true;
+						return;
+					}
 					
-					xInitPosition = e.getX();
-					yInitPosition = e.getY();
-					//System.out.println("xInitPosition " + xInitPosition + " yInitPosition " + yInitPosition);
-				}
-
-				@Override
-				public void mouseReleased(MouseEvent e) {
-					if(count == 0){
+					else{
 						xEndPosition = e.getX();
 						yEndPosition = e.getY();
-						//System.out.println("xEndPosition " + xEndPosition + " yEndPosition " + yEndPosition);
+						System.out.println("xEndPosition  " + xEndPosition + " yEndPosition " + yEndPosition);
+						dragging = false;
+						PaintObject draw = null;
+						if(lineButton.isSelected()){
+							draw = new Line(color, new Point(xInitPosition, yInitPosition), new Point(xEndPosition, yEndPosition));
+						}
+						else if(rectangleButton.isSelected()){
+							draw = new Rectangle(color, new Point(xInitPosition, yInitPosition), new Point(xEndPosition, yEndPosition));
+						}
+						else if(ovalButton.isSelected()){
+							draw = new Oval(color, new Point(xInitPosition, yInitPosition), new Point(xEndPosition, yEndPosition));
+						}
+						else if(imageButton.isSelected()){
+							System.out.println("IMAGE DOES NOT WORK");
+						}
+						
+						
+						
+						allPaintObjects.add(draw);
+						repaint();
+						return;
 					}
 					
 					
-					
-					PaintObject draw = null;
-					if(lineButton.isSelected()){
-						draw = new Line(color, new Point(xInitPosition, yInitPosition), new Point(xEndPosition, yEndPosition));
-					}
-					else if(rectangleButton.isSelected()){
-						draw = new Rectangle(color, new Point(xInitPosition, yInitPosition), new Point(xEndPosition, yEndPosition));
-					}
-					else if(ovalButton.isSelected()){
-						draw = new Oval(color, new Point(xInitPosition, yInitPosition), new Point(xEndPosition, yEndPosition));
-					}
-					else if(imageButton.isSelected()){
-						System.out.println("IMAGE DOES NOT WORK");
-					}
-					
-					allPaintObjects.add(draw);
-					repaint();
 				}
+		
 			});
 
 			this.addMouseMotionListener(new MouseMotionAdapter()
@@ -208,12 +205,18 @@ public class views extends JFrame {
 						System.out.println("IMAGE DOES NOT WORK");
 					}
 					temp.draw(g);
+					
 					repaint();
 					
 				
 
 					//System.out.println("x " + m.getX() + " y " + m.getY());
 
+				}
+				
+				@Override
+				public void mouseMoved(MouseEvent e){
+					System.out.println(" x "  + e.getX() + "  y " + e.getY());
 				}
 			});
 
