@@ -46,7 +46,6 @@ public class views extends JFrame {
 	private int yInitPosition;
 	private int xEndPosition;
 	private int yEndPosition;
-	private int count = 0;
 	private DrawingPanel drawingPanel;
 	private static Vector<PaintObject> allPaintObjects;
 	private static Vector<PaintObject> tempObjects;
@@ -136,58 +135,93 @@ public class views extends JFrame {
 	 */
 	class DrawingPanel extends JPanel {
 
+		boolean start = true;
 		boolean dragging = false;
+		int count = 0;
 
 		public void paintComponent(Graphics g) {
 
 			super.paintComponent(g);
 			g.setColor(Color.white);
 			g.fillRect(0, 0, this.getWidth(), this.getHeight());
-			
-			PaintObject p = new ImageObject(color, new Point(0, 0), new Point(100, 100));
-			p.draw(g);
-			
 
 			this.addMouseListener(new MouseAdapter() {
 				
 				@Override
 				public void mouseClicked(MouseEvent e) {
-				
-
-					if(!dragging){
+					
+					System.out.println("dragging " + dragging);
+					
+					if(start == true && count == 0){
+						//System.out.println("start");
 						xInitPosition = e.getX();
 						yInitPosition = e.getY();
-						//System.out.println("xInitPosition  " + xInitPosition + " yInitPosition " + yInitPosition);
 						dragging = true;
+						count++;
+						start = false;
+//						System.out.println("dragging " + dragging);
+//						System.out.println("start " + start);
+						System.out.println("1");
 						return;
 					}
+					
+					else if(start == false && count%2 !=0){
 
+						xInitPosition = e.getX();
+						yInitPosition = e.getY();
+						dragging = true;
+						count++;
+						System.out.println("2 -> dragging");
+						return;
+					}
+				
+					//in the middle of dragging
+					//initizes start positions
+					//not eh first time 
+//					else if(dragging && start == false){
+//						System.out.println("dragging");
+//						xInitPosition = e.getX();
+//						yInitPosition = e.getY();
+//						//System.out.println("xInitPosition  " + xInitPosition + " yInitPosition " + yInitPosition);
+//						return;
+//					}
+//					
 					else{
+						System.out.println("3 -> break");
+						dragging = false;
+						count--;
 						PaintObject draw = null;
-
 						xEndPosition = e.getX();
 						yEndPosition = e.getY();
-						dragging = false;
+						
 
 						if(lineButton.isSelected()){
-							draw = new Line(color, new Point(xInitPosition, yInitPosition), new Point(xEndPosition, yEndPosition));
+							draw = new Line(color, new Point(xInitPosition, yInitPosition), e.getPoint());
 							shape = "Line";
+							dragging = false;
 						}
 						else if(rectangleButton.isSelected()){
-							draw = new Rectangle(color, new Point(xInitPosition, yInitPosition), new Point(xEndPosition, yEndPosition));
+							draw = new Rectangle(color, new Point(xInitPosition, yInitPosition), e.getPoint());
 							shape = "Rectangle";
+							dragging = false;
 						}
 						else if(ovalButton.isSelected()){
-							draw = new Oval(color, new Point(xInitPosition, yInitPosition), new Point(xEndPosition, yEndPosition));
+							draw = new Oval(color, new Point(xInitPosition, yInitPosition), e.getPoint());
 							shape = "Oval";
+							dragging = false;
 						}
 						else if(imageButton.isSelected()){
-							draw = new ImageObject(color, new Point(xInitPosition, yInitPosition), new Point(xEndPosition, yEndPosition));
+							System.out.println("diff in image " + (e.getPoint().getX() - xInitPosition));
+							draw = new ImageObject(color, new Point(xInitPosition, yInitPosition), e.getPoint());
 							shape = "Image";
+							dragging = false;
 						}
 
-						allPaintObjects.add(draw);
+						System.out.println(count);
+						allPaintObjects.add(draw); 
 						repaint();
+						return;
+						
 					}
 
 
@@ -212,20 +246,23 @@ public class views extends JFrame {
 							temp = new Line(color, new Point(xInitPosition, yInitPosition), e.getPoint());
 						}
 						else if(rectangleButton.isSelected()){
-							temp = new Rectangle(color, new Point(xInitPosition, yInitPosition), new Point(xEndPosition, yEndPosition));
+							temp = new Rectangle(color, new Point(xInitPosition, yInitPosition), e.getPoint());
 						}
 						else if(ovalButton.isSelected()){
-							temp = new Oval(color, new Point(xInitPosition, yInitPosition), new Point(xEndPosition, yEndPosition));
+							temp = new Oval(color, new Point(xInitPosition, yInitPosition), e.getPoint());
 						}
 						else if(imageButton.isSelected()){
-							temp = new ImageObject(color, new Point(xInitPosition, yInitPosition), new Point(xEndPosition, yEndPosition));
+							temp = new ImageObject(color, new Point(xInitPosition, yInitPosition), e.getPoint());
 						}
 
 
-						allPaintObjects.remove(allPaintObjects.size()-1);
-						allPaintObjects.add(temp);
+						if(allPaintObjects.size() > 0){
+							allPaintObjects.remove(allPaintObjects.size()-1);
+							
+						}
 						
-						repaint();
+						allPaintObjects.add(temp);
+						repaint(); //ghost repaint
 					}
 	
 				}
