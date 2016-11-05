@@ -137,6 +137,7 @@ public class views extends JFrame {
 
 		boolean start = true;
 		boolean dragging = false;
+		int clickCount = 0;
 		int count = 0;
 
 		public void paintComponent(Graphics g) {
@@ -144,6 +145,8 @@ public class views extends JFrame {
 			super.paintComponent(g);
 			g.setColor(Color.white);
 			g.fillRect(0, 0, this.getWidth(), this.getHeight());
+			
+			
 
 			this.addMouseListener(new MouseAdapter() {
 				
@@ -151,6 +154,9 @@ public class views extends JFrame {
 				public void mouseClicked(MouseEvent e) {
 					
 					System.out.println("dragging " + dragging);
+					System.out.println("count " + count);
+					System.out.println("getClickCount " + e.MOUSE_CLICKED);
+					clickCount += e.getClickCount(); 
 					
 					if(start == true && count == 0){
 						//System.out.println("start");
@@ -161,17 +167,17 @@ public class views extends JFrame {
 						start = false;
 //						System.out.println("dragging " + dragging);
 //						System.out.println("start " + start);
-						System.out.println("1");
+						System.out.println("1 " + count);
 						return;
 					}
 					
-					else if(start == false && count%2 !=0){
+					else if(start == false && clickCount%2 !=0){
 
 						xInitPosition = e.getX();
 						yInitPosition = e.getY();
 						dragging = true;
 						count++;
-						System.out.println("2 -> dragging");
+						System.out.println("2 -> dragging " + count);
 						return;
 					}
 				
@@ -187,9 +193,9 @@ public class views extends JFrame {
 //					}
 //					
 					else{
-						System.out.println("3 -> break");
+						System.out.println("3 -> break " + count);
 						dragging = false;
-						count--;
+						count++;
 						PaintObject draw = null;
 						xEndPosition = e.getX();
 						yEndPosition = e.getY();
@@ -217,7 +223,6 @@ public class views extends JFrame {
 							dragging = false;
 						}
 
-						System.out.println(count);
 						allPaintObjects.add(draw); 
 						repaint();
 						return;
@@ -256,7 +261,7 @@ public class views extends JFrame {
 						}
 
 
-						if(allPaintObjects.size() > 0){
+						if(allPaintObjects.size() > 1){
 							allPaintObjects.remove(allPaintObjects.size()-1);
 							
 						}

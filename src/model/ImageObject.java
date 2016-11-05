@@ -49,10 +49,6 @@ public class ImageObject extends PaintObject  {
 			int newWidth = x2-x1;
 			int newHeight = y2-y1;
 			
-			System.out.println("x1 " + x1);
-			System.out.println("y1 " + y1);
-			System.out.println("x2 " + x2);
-			System.out.println("y2 " + y2);
 
 			if(newWidth != 0 && newHeight != 0){
 				java.awt.Image inputImage = ImageIO.read(new File("image.jpg")).getScaledInstance(newWidth,
