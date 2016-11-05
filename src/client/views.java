@@ -46,7 +46,6 @@ public class views extends JFrame {
 	private int yInitPosition;
 	private int xEndPosition;
 	private int yEndPosition;
-	private int count;
 	private boolean dragging;
 	private DrawingPanel drawingPanel;
 	private static Vector<PaintObject> allPaintObjects;
@@ -70,7 +69,6 @@ public class views extends JFrame {
 	public views() {
 		
 		dragging = false;
-		count = 0;
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		setResizable(true);
 
@@ -136,32 +134,29 @@ public class views extends JFrame {
 	 * This is where all the drawing goes.
 	 * @author mercer
 	 */
-	class DrawingPanel extends JPanel {
-
+	private class DrawingPanel extends JPanel {
 		
+		public DrawingPanel(){
+			//this.setOpaque(true);
+			this.setBackground(Color.WHITE);
+			MouseActionListener mal = new MouseActionListener();
+			this.addMouseListener(mal);
+			this.addMouseMotionListener(mal);
+		}
 
 		public void paintComponent(Graphics g) {
 
 			super.paintComponent(g);
-			g.setColor(Color.white);
-			g.fillRect(0, 0, this.getWidth(), this.getHeight());
-			
-			MouseListener m = new MouseActionListener();
-			MouseMotionListener mml = new MouseActionListener();
-			this.addMouseListener(m);
-			this.addMouseMotionListener(mml);
-			
 			this.drawShapes(g);	
 		}
-
-		private void drawShapes(Graphics g) {
+		
+		public void drawShapes(Graphics g) {
 			for (PaintObject ob : allPaintObjects){
 				ob.draw(g);
 			}
-			
 		}
 	}
-
+	
 	public Point getInitPoint(){
 		return new Point(this.xInitPosition, this.yInitPosition);
 	}
@@ -205,17 +200,15 @@ public class views extends JFrame {
 					shape = "Oval";
 				}
 				else if(imageButton.isSelected()){
-					System.out.println("diff in image " + (e.getPoint().getX() - xInitPosition));
 					draw = new ImageObject(color, new Point(xInitPosition, yInitPosition), e.getPoint());
 					shape = "Image";
 				}
 
 				allPaintObjects.add(draw); 
 				repaint();
-				repaint();
 			}
 			
-			else{
+			else {
 				System.out.println("dragging is false -> 2nd click ? " + dragging);
 				allPaintObjects.remove(allPaintObjects.size()-1);
 				if(lineButton.isSelected()){
@@ -237,8 +230,8 @@ public class views extends JFrame {
 				
 				allPaintObjects.add(draw); 
 				repaint();
-				repaint();
 			}
+			
 			
 		}
 
