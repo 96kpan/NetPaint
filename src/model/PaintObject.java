@@ -12,6 +12,10 @@ import java.awt.Point;
 import java.io.Serializable;
 
 public abstract class PaintObject implements Serializable{
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = 1L;
 	private Color color;
 	private Point pointone;
 	private Point pointtwo;

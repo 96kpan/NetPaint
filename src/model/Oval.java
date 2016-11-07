@@ -12,6 +12,11 @@ import java.io.Serializable;
 
 
 public class Oval extends PaintObject implements Serializable{
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = 1L;
+
 	public Oval(Color co, Point point, Point point2) {
 		super(co, point, point2);
 	}
@@ -42,13 +47,11 @@ public class Oval extends PaintObject implements Serializable{
 
 	@Override
 	public java.awt.Image getImage() {
-		// TODO Auto-generated method stub
 		return null;
 	}
 
 	@Override
 	public boolean isImage() {
-		// TODO Auto-generated method stub
 		return false;
 	}
 }

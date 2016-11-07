@@ -10,6 +10,12 @@ import java.awt.Point;
 import java.io.Serializable;
 
 public class Line extends PaintObject implements Serializable {
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = 1L;
+
+
 	public Line(Color color, Point point, Point point2) {
 		super(color, point, point2);
 	}

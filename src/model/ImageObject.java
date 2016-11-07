@@ -1,4 +1,19 @@
-//1245
+/*	Netpaint 16
+ *	Authors: Katie Pan & Niven Francis
+ *
+ *	Section Leaders: Bree Collins & Cody Macdonald
+ *	Due: 11/7/16
+ *	
+ *	Last Edited: 11/7 10:10
+ *
+ *	ImageObject.java-------------------------------
+ *	|
+ *	|	Sets up the server so it syncs all
+ *	|	paint objects to clients, takes new
+ *	|	clients and new paint objects.
+ *	|
+ *
+ */
 
 package model;
 
@@ -14,6 +29,10 @@ import javax.imageio.ImageIO;
 
 public class ImageObject extends PaintObject implements Serializable {
 
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = 1L;
 	private int newHeight;
 	private int newWidth;
 
@@ -52,6 +71,7 @@ public class ImageObject extends PaintObject implements Serializable {
 			
 
 			if(newWidth != 0 && newHeight != 0){
+				@SuppressWarnings("unused")
 				java.awt.Image inputImage = ImageIO.read(new File("image.jpg")).getScaledInstance(newWidth,
 						newHeight, java.awt.Image.SCALE_DEFAULT);
 				//g.drawImage(inputImage, x1, y1, null);
@@ -68,7 +88,6 @@ public class ImageObject extends PaintObject implements Serializable {
 
 	@Override
 	public java.awt.Image getImage() {
-		// TODO Auto-generated method stub
 		try {
 
 

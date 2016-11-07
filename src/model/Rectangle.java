@@ -13,6 +13,11 @@ import java.io.Serializable;
 
 public class Rectangle extends PaintObject implements Serializable{
 	
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = 1L;
+
 	public Rectangle(Color color1, Point point, Point point2) {
 		super(color1, point, point2);
 	}
@@ -46,13 +51,11 @@ public class Rectangle extends PaintObject implements Serializable{
 
 	@Override
 	public java.awt.Image getImage() {
-		// TODO Auto-generated method stub
 		return null;
 	}
 
 	@Override
 	public boolean isImage() {
-		// TODO Auto-generated method stub
 		return false;
 	}
 }
