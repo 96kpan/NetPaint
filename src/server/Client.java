@@ -1,4 +1,20 @@
-//1245
+/*	Netpaint 16
+ *	Authors: Katie Pan & Niven Francis
+ *
+ *	Section Leaders: Bree Collins & Cody Macdonald
+ *	Due: 11/7/16
+ *	
+ *	Last Edited: 11/7 10:10
+ *
+ *	Client.java-------------------------------
+ *	|
+ *	|	Contains all back-end code for the GUI
+ *	|	and setting up the client so it can 
+ *	|	connect to servers.
+ *	|
+ *
+ */
+
 
 package server;
 
@@ -36,8 +52,7 @@ import model.Oval;
 import model.PaintObject;
 import model.Rectangle;
 
-
-public class Client extends JFrame implements Serializable{
+public class Client extends JFrame implements Serializable {
 
 	/**
 	 * 
@@ -49,7 +64,7 @@ public class Client extends JFrame implements Serializable{
 	private int yEndPosition;
 	private boolean dragging;
 	private DrawingPanel drawingPanel;
-	private static Vector<PaintObject> allPaintObjects= new Vector<PaintObject>();;
+	private static Vector<PaintObject> allPaintObjects = new Vector<PaintObject>();;
 	private JRadioButton lineButton;
 	private JRadioButton rectangleButton;
 	private JRadioButton ovalButton;
@@ -67,12 +82,15 @@ public class Client extends JFrame implements Serializable{
 	private ObjectInputStream ois;
 	private PaintObject draw;
 
+	// Creates the client object
 	public static void main(String[] args) {
 		Client client = new Client();
 
 		client.setVisible(true);
 	}
 
+	// Constructor for Client
+	// Connects client to server if available and initializes GUI
 	public Client() {
 		try {
 			// Connect to a Server and get the two streams from the server
@@ -93,8 +111,10 @@ public class Client extends JFrame implements Serializable{
 		}
 
 		initializeGUI();
+		
+		// Gets paint objects from the server
 		try {
-		    @SuppressWarnings("unchecked")
+			@SuppressWarnings("unchecked")
 			Vector<PaintObject> something = (Vector<PaintObject>) ois.readObject();
 			if (something != null)
 				allPaintObjects = something;
@@ -106,11 +126,11 @@ public class Client extends JFrame implements Serializable{
 			e1.printStackTrace();
 		}
 
-
 		ServerListener serverListener = new ServerListener();
 		serverListener.start();
 	}
 
+	// Initializes the GUI elements
 	private void initializeGUI() {
 		dragging = false;
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
@@ -175,6 +195,7 @@ public class Client extends JFrame implements Serializable{
 		setVisible(true);
 	}
 
+	// Sets up server listener which gets paint objects from class
 	private class ServerListener extends Thread {
 		@SuppressWarnings("unchecked")
 		@Override
@@ -220,10 +241,10 @@ public class Client extends JFrame implements Serializable{
 		}
 
 		public void drawShapes(Graphics g) {
-			if(!allPaintObjects.isEmpty())
-			for (PaintObject ob : allPaintObjects) {
-				ob.draw(g);
-			}
+			if (!allPaintObjects.isEmpty())
+				for (PaintObject ob : allPaintObjects) {
+					ob.draw(g);
+				}
 		}
 	}
 
@@ -243,6 +264,7 @@ public class Client extends JFrame implements Serializable{
 		return shape;
 	}
 
+	// Mouse listener setup for getting mouse locations and clicks necessary to draw objects
 	private class MouseActionListener implements MouseListener, MouseMotionListener {
 
 		@Override

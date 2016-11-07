@@ -1,16 +1,21 @@
-package server;
-
-/**
- * TO BE CHANGED to allow multiple clients the read and write a Vector of
- * PaintObjects every time a client writes a PaintObject to this server.
- * 
- * THIS CONTAINS SOME OF THE BOILERPLATE CODE PROVIDED HERE
- * 
- * Currently this server waits for one connection, reads the Clients message, which  
- * is printed to a console, writes a message to the Client, and closes the connection.
+/*	Netpaint 16
+ *	Authors: Katie Pan & Niven Francis
  *
- * @author YOUR NAME(S)
+ *	Section Leaders: Bree Collins & Cody Macdonald
+ *	Due: 11/7/16
+ *	
+ *	Last Edited: 11/7 10:10
+ *
+ *	Server.java-------------------------------
+ *	|
+ *	|	Sets up the server so it syncs all
+ *	|	paint objects to clients, takes new
+ *	|	clients and new paint objects.
+ *	|
+ *
  */
+
+package server;
 
 import java.io.IOException;
 import java.io.ObjectInputStream;
@@ -25,27 +30,28 @@ import java.util.Vector;
 
 import model.PaintObject;
 
-public class Server implements Serializable{
-	
+public class Server implements Serializable {
+
 	/**
 	 * 
 	 */
 	private static final long serialVersionUID = 1L;
 
 	public static final int SERVER_PORT = 9001;
-	
+
 	private static List<ObjectOutputStream> clients = Collections.synchronizedList(new ArrayList<>());
 	public static Vector<PaintObject> allPaintObjects = new Vector<PaintObject>();
 	private static ServerSocket socket;
 
+	// Sets up server ports, streams, and clients
 	public static void main(String[] args) throws IOException {
 		socket = new ServerSocket(SERVER_PORT);
 		System.out.println("Server started on port " + SERVER_PORT);
 		Socket client;
-		
-		while(true) {
+
+		while (true) {
 			client = socket.accept();
-			
+
 			ObjectOutputStream outputToClient = new ObjectOutputStream(client.getOutputStream());
 			ObjectInputStream inputFromClient = new ObjectInputStream(client.getInputStream());
 
@@ -58,43 +64,25 @@ public class Server implements Serializable{
 			c.start();
 			System.out.println("Accepted a new connection from " + socket.getInetAddress());
 		}
-		
-		
-//		try {
-//			// Create a ServerSocket and wait for a Client to connect
-//			@SuppressWarnings("resource")
-//			
-//			Socket client = socket.accept();
-//			// Make both connection steams available
-//			ObjectOutputStream outputToClient = new ObjectOutputStream(client.getOutputStream());
-//			ObjectInputStream inputFromClient = new ObjectInputStream(client.getInputStream());
-//
-//			// Do a read and write
-//			String messageFromClient = (String) inputFromClient.readObject();
-//			System.out.println("The client wrote this to the server: " + messageFromClient);
-//			outputToClient.writeObject("Hello Client. How may I serve you today?");
-//
-//			// Close the connection
-//			client.close();
-//		} catch (IOException e) {
-//		} catch (ClassNotFoundException e) {
-//		}
 	}
 }
 
+// Inner class handles clients by accepting new ones and takes in paint objects
 class ClientHandler extends Thread {
 	private ObjectInputStream input;
 	private List<ObjectOutputStream> clients;
-	
+
+	// Sets the inner class objects
 	public ClientHandler(ObjectInputStream input, List<ObjectOutputStream> clients) {
 		this.input = input;
 		this.clients = clients;
 	}
-	
+
+	// Gets new paint objects from clients in order to synchronize with everyone else
 	@SuppressWarnings("unchecked")
 	@Override
 	public void run() {
-		while(true) {
+		while (true) {
 			try {
 				Server.allPaintObjects = (Vector<PaintObject>) input.readObject();
 				writePaintObject();
@@ -109,11 +97,12 @@ class ClientHandler extends Thread {
 			}
 		}
 	}
-	
+
+	// If new paint objects are collected, it draws it to all clients
 	private void writePaintObject() {
-		synchronized(clients) {
+		synchronized (clients) {
 			ArrayList<ObjectOutputStream> closed = new ArrayList<>();
-			for(ObjectOutputStream client : clients) {
+			for (ObjectOutputStream client : clients) {
 				try {
 					client.reset();
 					client.writeObject(Server.allPaintObjects);
