@@ -27,7 +27,7 @@ import model.PaintObject;
 
 public class Server implements Serializable{
 	
-	public static final int SERVER_PORT = 20;
+	public static final int SERVER_PORT = 9001;
 	
 	private static List<ObjectOutputStream> clients = Collections.synchronizedList(new ArrayList<>());
 	public static Vector<PaintObject> allPaintObjects = new Vector<PaintObject>();

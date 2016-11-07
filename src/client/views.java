@@ -86,7 +86,7 @@ public class views extends JFrame implements Serializable{
 
 	// added
 	private static final String ADDRESS = "localhost";
-	private static final int SERVER_PORT = 20;
+	private static final int SERVER_PORT = 9001;
 	private DefaultListModel<Vector<PaintObject>> model;
 	private Socket socket;
 	private ObjectOutputStream oos;
@@ -115,8 +115,9 @@ public class views extends JFrame implements Serializable{
 
 		initializeGUI();
 		try {
-			if (ois.readObject() != null)
-				allPaintObjects = (Vector<PaintObject>) ois.readObject();
+		    Vector<PaintObject> something = ( Vector<PaintObject>) ois.readObject();
+			if (something != null)
+				allPaintObjects = something;
 			else
 				allPaintObjects = new Vector<PaintObject>();
 		} catch (ClassNotFoundException e1) {
@@ -324,7 +325,7 @@ public class views extends JFrame implements Serializable{
 				allPaintObjects.add(draw);
 				try {
 					oos.reset();
-					oos.writeObject(draw);
+					oos.writeObject(allPaintObjects);
 				} catch (IOException ioe) {
 					ioe.printStackTrace();
 				}
