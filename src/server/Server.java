@@ -20,13 +20,16 @@ import java.net.Socket;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
+import java.util.Vector;
+
+import model.PaintObject;
 
 public class Server {
 	
-	public static final int SERVER_PORT = 4000;
+	public static final int SERVER_PORT = 20;
 	
 	private static List<ObjectOutputStream> clients = Collections.synchronizedList(new ArrayList<>());
-	
+	public static Vector<PaintObject> allPaintObjects = new Vector<PaintObject>();
 	private static ServerSocket socket;
 
 	public static void main(String[] args) throws IOException {
@@ -40,9 +43,12 @@ public class Server {
 			ObjectOutputStream outputToClient = new ObjectOutputStream(client.getOutputStream());
 			ObjectInputStream inputFromClient = new ObjectInputStream(client.getInputStream());
 
-			clients.add(outputToClient);
-			
-			ClientHandler c = new ClientHandler(inputFromClient, clients);
+			synchronized (clients) {
+				clients.add(outputToClient);
+			}
+			outputToClient.reset();
+			outputToClient.writeObject(allPaintObjects);
+			Thread c = new ClientHandler(inputFromClient, clients);
 			c.start();
 			System.out.println("Accepted a new connection from " + socket.getInetAddress());
 		}
@@ -82,28 +88,33 @@ class ClientHandler extends Thread {
 	@Override
 	public void run() {
 		while(true) {
-			String message = null;
-			
 			try {
-				message = (String) input.readObject();
+				Server.allPaintObjects = (Vector<PaintObject>) input.readObject();
+				writePaintObject();
 			} catch (Exception e) {
-				e.printStackTrace();
+				try {
+					input.close();
+					break;
+				} catch (IOException e1) {
+					// TODO Auto-generated catch block
+					e1.printStackTrace();
+					break;
+				}
 			}
-			
-			this.writeStringToClients(message);
 		}
 	}
 	
-	private void writeStringToClients(String message) {
+	private void writePaintObject() {
 		synchronized(clients) {
+			ArrayList<ObjectOutputStream> closed = new ArrayList<>();
 			for(ObjectOutputStream client : clients) {
 				try {
-					client.writeObject(message);
 					client.reset();
+					client.writeObject(Server.allPaintObjects);
 				} catch (IOException e) {
-					e.printStackTrace();
-					clients.remove(client);
+					closed.add(client);
 				}
+				clients.removeAll(closed);
 			}
 		}
 	}

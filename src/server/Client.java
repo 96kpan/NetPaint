@@ -24,7 +24,7 @@ public class Client {
     
     try {
       // Connect to a Server and get the two streams from the server
-      Socket server = new Socket("localhost", 4000);
+      Socket server = new Socket("localhost", 11);
       
       // Do some IO with the server
       ObjectOutputStream outputToServer = new ObjectOutputStream(server.getOutputStream());

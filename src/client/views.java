@@ -73,7 +73,7 @@ public class views extends JFrame {
 	private int yEndPosition;
 	private boolean dragging;
 	private DrawingPanel drawingPanel;
-	private static Vector<PaintObject> allPaintObjects;
+	private static Vector<PaintObject> allPaintObjects= new Vector<PaintObject>();;
 	private JRadioButton lineButton;
 	private JRadioButton rectangleButton;
 	private JRadioButton ovalButton;
@@ -85,6 +85,7 @@ public class views extends JFrame {
 
 	// added
 	private static final String ADDRESS = "localhost";
+	private static final int SERVER_PORT = 20;
 	private DefaultListModel<Vector<PaintObject>> model;
 	private Socket socket;
 	private ObjectOutputStream oos;
@@ -94,13 +95,43 @@ public class views extends JFrame {
 	public static void main(String[] args) {
 		views client = new views();
 
-		allPaintObjects = new Vector<>();
-
 		client.setVisible(true);
 	}
 
 	public views() {
+		try {
+			// Connect to a Server and get the two streams from the server
+			socket = new Socket("localhost", SERVER_PORT);
 
+			// Do some IO with the server
+			oos = new ObjectOutputStream(socket.getOutputStream());
+			ois = new ObjectInputStream(socket.getInputStream());
+
+		} catch (IOException e) {
+			socket = null;
+			e.printStackTrace();
+		}
+
+		initializeGUI();
+		try {
+			if (ois.readObject() != null)
+				allPaintObjects = (Vector<PaintObject>) ois.readObject();
+			else
+				allPaintObjects = new Vector<PaintObject>();
+		} catch (ClassNotFoundException e1) {
+			// TODO Auto-generated catch block
+			e1.printStackTrace();
+		} catch (IOException e1) {
+			// TODO Auto-generated catch block
+			e1.printStackTrace();
+		}
+
+
+		ServerListener serverListener = new ServerListener();
+		serverListener.start();
+	}
+
+	private void initializeGUI() {
 		dragging = false;
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		setResizable(true);
@@ -161,42 +192,20 @@ public class views extends JFrame {
 		add(colorChooser, BorderLayout.CENTER);
 
 		setVisible(true);
-		
-		try {
-		      // Connect to a Server and get the two streams from the server
-		      Socket server = new Socket("localhost", 4000);
-		      
-		      // Do some IO with the server
-		      oos = new ObjectOutputStream(server.getOutputStream());
-		      ois = new ObjectInputStream(server.getInputStream());
-		   
-		      // Do a write and read
-		      oos.writeObject("Hello server, how are you today");
-		      String fromServer = (String) ois.readObject();
-		      System.out.println("The server wrote back: " + fromServer);
-		      
-		      // Close the connection to the server
-		      server.close();     
-		    } catch (IOException e) {
-		      e.printStackTrace();
-		    } catch (ClassNotFoundException e) {
-		      e.printStackTrace();
-		    }
-
-		ServerListener serverListener = new ServerListener();
-		serverListener.start();
 	}
 
 	private class ServerListener extends Thread {
 		@Override
 		public void run() {
-			try {
-				while (true) {
-					if(ois.readObject() != null)
-						views.this.model.addElement((Vector<PaintObject>) ois.readObject());
+			while (true) {
+				try {
+					allPaintObjects = (Vector<PaintObject>) ois.readObject();
+					repaint();
+				} catch (ClassNotFoundException | IOException e) {
+					// TODO Auto-generated catch block
+					e.printStackTrace();
+					break;
 				}
-			} catch (IOException | ClassNotFoundException e) {
-
 			}
 		}
 	}
@@ -227,16 +236,18 @@ public class views extends JFrame {
 			MouseActionListener mal = new MouseActionListener();
 			this.addMouseListener(mal);
 			this.addMouseMotionListener(mal);
-			//mal.addActionListener(new FieldListener());
+			// mal.addActionListener(new FieldListener());
 		}
 
 		public void paintComponent(Graphics g) {
 
 			super.paintComponent(g);
 			this.drawShapes(g);
+
 		}
 
 		public void drawShapes(Graphics g) {
+			if(!allPaintObjects.isEmpty())
 			for (PaintObject ob : allPaintObjects) {
 				ob.draw(g);
 			}
@@ -264,11 +275,12 @@ public class views extends JFrame {
 		@Override
 		public void mouseClicked(MouseEvent e) {
 			dragging = !dragging;
-			//System.out.println("dragging " + dragging);
+			// System.out.println("dragging " + dragging);
 			draw = null;
 
 			if (dragging) {
-				//System.out.println("dragging is true ? -> 1st click " + dragging);
+				// System.out.println("dragging is true ? -> 1st click " +
+				// dragging);
 				xInitPosition = e.getX();
 				yInitPosition = e.getY();
 
@@ -291,7 +303,8 @@ public class views extends JFrame {
 			}
 
 			else {
-				//System.out.println("dragging is false -> 2nd click ? " + dragging);
+				// System.out.println("dragging is false -> 2nd click ? " +
+				// dragging);
 				allPaintObjects.remove(allPaintObjects.size() - 1);
 				if (lineButton.isSelected()) {
 					draw = new Line(color, new Point(xInitPosition, yInitPosition), e.getPoint());
@@ -309,10 +322,10 @@ public class views extends JFrame {
 
 				allPaintObjects.add(draw);
 				try {
-					if(draw != null)
-						oos.writeObject(draw);
+					oos.reset();
+					oos.writeObject(draw);
 				} catch (IOException ioe) {
-
+					ioe.printStackTrace();
 				}
 				repaint();
 			}
