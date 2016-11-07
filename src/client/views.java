@@ -102,7 +102,12 @@ public class views extends JFrame implements Serializable{
 	public views() {
 		try {
 			// Connect to a Server and get the two streams from the server
-			socket = new Socket("localhost", SERVER_PORT);
+			try {
+				socket = new Socket("localhost", SERVER_PORT);
+			} catch (IOException e) {
+				System.out.println("Could not connect to server.");
+				System.exit(1);
+			}
 
 			// Do some IO with the server
 			oos = new ObjectOutputStream(socket.getOutputStream());

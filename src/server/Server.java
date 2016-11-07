@@ -27,6 +27,11 @@ import model.PaintObject;
 
 public class Server implements Serializable{
 	
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = 1L;
+
 	public static final int SERVER_PORT = 9001;
 	
 	private static List<ObjectOutputStream> clients = Collections.synchronizedList(new ArrayList<>());
@@ -86,6 +91,7 @@ class ClientHandler extends Thread {
 		this.clients = clients;
 	}
 	
+	@SuppressWarnings("unchecked")
 	@Override
 	public void run() {
 		while(true) {
@@ -97,7 +103,6 @@ class ClientHandler extends Thread {
 					input.close();
 					break;
 				} catch (IOException e1) {
-					// TODO Auto-generated catch block
 					e1.printStackTrace();
 					break;
 				}
