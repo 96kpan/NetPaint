@@ -9,8 +9,9 @@ package model;
 import java.awt.Color;
 import java.awt.Graphics;
 import java.awt.Point;
+import java.io.Serializable;
 
-public class Rectangle extends PaintObject {
+public class Rectangle extends PaintObject implements Serializable{
 	
 	public Rectangle(Color color1, Point point, Point point2) {
 		super(color1, point, point2);

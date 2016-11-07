@@ -19,6 +19,7 @@ import java.awt.event.MouseMotionListener;
 import java.io.IOException;
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
+import java.io.Serializable;
 import java.net.Socket;
 import java.util.Vector;
 
@@ -65,7 +66,7 @@ import javax.swing.JTextField;
  * @author Rick Mercer
  */
 
-public class views extends JFrame {
+public class views extends JFrame implements Serializable{
 
 	private int xInitPosition;
 	private int yInitPosition;

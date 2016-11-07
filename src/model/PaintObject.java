@@ -9,8 +9,9 @@ package model;
 import java.awt.Color;
 import java.awt.Graphics;
 import java.awt.Point;
+import java.io.Serializable;
 
-public abstract class PaintObject {
+public abstract class PaintObject implements Serializable{
 	private Color color;
 	private Point pointone;
 	private Point pointtwo;

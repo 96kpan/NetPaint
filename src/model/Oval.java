@@ -8,9 +8,10 @@ package model;
 import java.awt.Color;
 import java.awt.Graphics;
 import java.awt.Point;
+import java.io.Serializable;
 
 
-public class Oval extends PaintObject {
+public class Oval extends PaintObject implements Serializable{
 	public Oval(Color co, Point point, Point point2) {
 		super(co, point, point2);
 	}

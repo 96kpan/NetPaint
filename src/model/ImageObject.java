@@ -8,10 +8,11 @@ import java.awt.Point;
 import java.awt.image.ImageObserver;
 import java.io.File;
 import java.io.IOException;
+import java.io.Serializable;
 
 import javax.imageio.ImageIO;
 
-public class ImageObject extends PaintObject  {
+public class ImageObject extends PaintObject implements Serializable {
 
 	private int newHeight;
 	private int newWidth;

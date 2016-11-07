@@ -16,9 +16,10 @@ package server;
 import java.io.IOException;
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
+import java.io.Serializable;
 import java.net.Socket;
 
-public class Client {
+public class Client implements Serializable {
 
   public static void main(String[] args) {
     

@@ -7,8 +7,9 @@ package model;
 import java.awt.Color;
 import java.awt.Graphics;
 import java.awt.Point;
+import java.io.Serializable;
 
-public class Line extends PaintObject {
+public class Line extends PaintObject implements Serializable {
 	public Line(Color color, Point point, Point point2) {
 		super(color, point, point2);
 	}
