@@ -1,6 +1,17 @@
-/*
- * Katie Pan
- * PaintObject for Netpaint -> Abstract, super class
+/*	Netpaint 16
+ *	Authors: Katie Pan & Niven Francis
+ *
+ *	Section Leaders: Bree Collins & Cody Macdonald
+ *	Due: 11/7/16
+ *	
+ *	Last Edited: 11/7 10:10
+ *
+ *	PaintObject.java-------------------------------
+ *	|
+ *	|	Super and abstract class used for multiple
+ *	|	paint objects.
+ *	|
+ *
  */
 
 

@@ -1,6 +1,17 @@
-/*
- * Katie Pan
- * Oval for Netpaint
+/*	Netpaint 16
+ *	Authors: Katie Pan & Niven Francis
+ *
+ *	Section Leaders: Bree Collins & Cody Macdonald
+ *	Due: 11/7/16
+ *	
+ *	Last Edited: 11/7 10:10
+ *
+ *	Oval.java-------------------------------
+ *	|
+ *	|	Oval extends PaintObject and draws
+ *	|	an oval depending on the points passed.
+ *	|
+ *
  */
 
 package model;

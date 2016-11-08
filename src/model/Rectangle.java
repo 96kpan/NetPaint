@@ -1,6 +1,17 @@
-/*
- * Katie Pan
- * Rectangle for Netpaint
+/*	Netpaint 16
+ *	Authors: Katie Pan & Niven Francis
+ *
+ *	Section Leaders: Bree Collins & Cody Macdonald
+ *	Due: 11/7/16
+ *	
+ *	Last Edited: 11/7 10:10
+ *
+ *	Rectangle.java-------------------------------
+ *	|
+ *	|	Rectangle extends PaintObject and draws
+ *	|	a Rectangle depending on the points passed.
+ *	|
+ *
  */
 
 

@@ -8,9 +8,8 @@
  *
  *	ImageObject.java-------------------------------
  *	|
- *	|	Sets up the server so it syncs all
- *	|	paint objects to clients, takes new
- *	|	clients and new paint objects.
+ *	|	ImageObject extends PaintObject and draws
+ *	|	an image depending on the points passed.
  *	|
  *
  */
@@ -36,10 +35,12 @@ public class ImageObject extends PaintObject implements Serializable {
 	private int newHeight;
 	private int newWidth;
 
+	// Calls the super class PaintObject and sets values
 	public ImageObject(Color color1, Point point, Point point2) {
 		super(color1, point, point2);
 	}
 
+	// drwas on the jpanel depending on the points given
 	@Override
 	public void draw(Graphics g) {
 		try {
@@ -86,6 +87,7 @@ public class ImageObject extends PaintObject implements Serializable {
 
 	}
 
+	// Gets the image from the files to be used to draw it on the panel
 	@Override
 	public java.awt.Image getImage() {
 		try {
